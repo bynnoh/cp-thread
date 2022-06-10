@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+{% block title %} Thread {% endblock %}
+
+{% block main-area %}
+    {% for thread in thread_list %}
+        <h1>{{ thread.title }}</h1><span>{{ thread.created_at }}</span>
+        <p>{{ thread.content }}</p>
+        {{ thread.likes }}
+    {% endfor %}
+{% endblock %}
