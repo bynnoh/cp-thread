@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+
+{% block title %} {{ thread.title }} - Thread {% endblock %}
+
+{% block main-area %}
+
+<h1>{{ thread.title }} </h1>
+{{ thread.content }}
+
+{% endblock %}

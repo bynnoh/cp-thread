@@ -10,7 +10,7 @@ from .models import Thread, Comment
 class ThreadList(ListView):
     model = Thread
 
-class ThreadDetai(DetailView):
+class ThreadDetail(DetailView):
     model = Thread
 
 class ThreadCreate(CreateView):
