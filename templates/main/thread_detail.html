@@ -4,7 +4,13 @@
 
 {% block main-area %}
 
-<h1>{{ thread.title }} </h1>
-{{ thread.content }}
+<h1>{{ thread.title }}</h1>
+<p>{{ thread.content }}</p>
 
+{% if thread.comment_set.exists %}
+    {% for comment in thread.comment_set.iterator %}
+        {{ comment.author }} {{comment.created_at }}
+        <p>{{ comment.content }}</p>
+    {% endfor %}
+{% endif %}
 {% endblock %}

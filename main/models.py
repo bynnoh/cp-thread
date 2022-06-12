@@ -18,10 +18,11 @@ class Thread(models.Model):
         return f'[{self.pk}]{self.title} :: {self.author}'
 
     def get_absolute_url(self):
-        return reverse("thread_detail", kwargs={"pk": self.pk})
+        return reverse("thread-detail", kwargs={"pk": self.pk})
 
 
 class Comment(models.Model):
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     content = models.TextField(max_length=1000)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
