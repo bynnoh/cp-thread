@@ -3,6 +3,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+class Topic(models.Model):
+    topic = models.CharField(max_length=10)
+
+    def get_absolute_url(self):
+        return f'{self.topic}'
+
 class Thread(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField(max_length=5000)
