@@ -1,11 +1,7 @@
-from typing import List
-from xml.etree.ElementTree import Comment
 from django.views.generic import ListView, DetailView, CreateView
 from django.shortcuts import render
 
-from .models import Thread, Comment
-
-# Create your views here.
+from .models import Topic, Thread, Comment
 
 class ThreadList(ListView):
     model = Thread
@@ -25,3 +21,18 @@ class CommentDetail(DetailView):
 
 class CommentCreate(CreateView):
     model = Comment
+
+def topic_page(request, slug):
+    topic = Topic.objects.get(slug=slug)
+    thread_list = Thread.objects.filter(topic=topic)
+
+    context = {
+        'topic': topic,
+        'thread_list': thread_list
+    }
+
+    return render(
+        request,
+        'main/thread_list.html',
+        context
+    )
