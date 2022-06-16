@@ -3,9 +3,11 @@
 {% block title %} {{ thread.title }} - Thread {% endblock %}
 
 {% block main-area %}
-
+{{ thread.topic }}
 <h1>{{ thread.title }}</h1>
 <p>{{ thread.content }}</p>
+<a href={% url 'upvote' thread.id %}>upvote</a>
+{{ thread.upvotes }}
 
 {% if thread.comment_set.exists %}
     {% for comment in thread.comment_set.iterator %}

@@ -19,8 +19,7 @@ class Thread(models.Model):
     content = models.TextField(max_length=5000)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
-    likes = models.IntegerField(default=0, editable=False)
-    down = models.IntegerField(default=0, editable=False)
+    upvotes = models.IntegerField(default=0, editable=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -29,16 +28,14 @@ class Thread(models.Model):
         return f'[{self.pk}]{self.title} :: {self.author}'
 
     def get_absolute_url(self):
-        return reverse("thread-detail", kwargs={"pk": self.pk})
-
+        return f'/{self.pk}'
 
 class Comment(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     content = models.TextField(max_length=1000)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
-    likes = models.IntegerField(default=0, editable=False)
-    down = models.IntegerField(default=0, editable=False)
+    upvotes = models.IntegerField(default=0, editable=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -49,4 +46,12 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return f'{self.thread.get_absolute_url()}#{self.pk}'
     
-    
+class Vote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, null=True, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint('user', 'thread', 'comment', name='user_and_tc')
+        ]
