@@ -39,8 +39,12 @@ def topic_page(request, slug):
 
 def upvote_thread(request, pk):
     target = get_object_or_404(Thread, id=pk)
-    Vote.objects.create(user = request.user, thread = target)
-    target.upvotes += 1
-    target.save()
-    
-    return redirect(target.get_absolute_url())
+    vote = Vote.objects.filter(thread=target)
+
+    if vote.filter(user=request.user):
+        return redirect(target.get_absolute_url())
+    else:
+        Vote.objects.create(user = request.user, thread = target)
+        target.upvotes += 1
+        target.save()
+        return redirect(target.get_absolute_url())
