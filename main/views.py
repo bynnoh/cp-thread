@@ -1,13 +1,14 @@
+from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView
 from django.shortcuts import get_object_or_404, redirect, render
-
 from .models import Topic, Thread, Comment, Vote
+from .forms import CommentForm
 
 class ThreadList(ListView):
     model = Thread
 
-class ThreadDetail(DetailView):
-    model = Thread
+# class ThreadDetail(DetailView):
+#     model = Thread
 
 class ThreadCreate(CreateView):
     model = Thread
@@ -21,6 +22,44 @@ class CommentDetail(DetailView):
 
 class CommentCreate(CreateView):
     model = Comment
+    fields = ['content']
+    # http_method_names = ['POST']
+    # template_name = 'thread_detail.html'
+    # model = Comment
+    # form_class = CommentForm
+
+    # def form_valid(self, form):
+    #     form.instance.thread = Thread.objects.get(pk=self.kwargs.get("pk"))
+    #     return super().form_valid(form)
+
+    # def get_success_url(self):
+    #     return reverse('thread-detail', kwargs={'pk': self.kwargs.get("pk")})
+
+def thread_detail(request, pk):
+    thread = get_object_or_404(Thread, pk=pk)
+    form = CommentForm()
+
+    return render(
+        request,
+        'main/thread_detail.html',
+        {
+            'thread': thread, 
+            'form': form
+        }
+    )
+
+def submit_comment(request, pk):
+    thread = Thread.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        form.save(commit=False)
+        form.instance.thread = thread
+        form.save()
+        return redirect(thread.get_absolute_url())
+
+    else:
+        return redirect(thread.get_absolute_url())
 
 def topic_page(request, slug):
     topic = Topic.objects.get(slug=slug)

@@ -9,6 +9,11 @@
 <a href={% url 'upvote' thread.id %}>upvote</a>
 {{ thread.upvotes }}
 
+<form method='POST' action='{% url 'submit-comment' thread.pk %}'> {% csrf_token %}
+    {{ form }}
+    <button type="submit">submit</button>
+</form>
+
 {% if thread.comment_set.exists %}
     {% for comment in thread.comment_set.iterator %}
         {{ comment.author }} {{comment.created_at }}

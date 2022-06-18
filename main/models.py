@@ -32,7 +32,7 @@ class Thread(models.Model):
 
 class Comment(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
-    content = models.TextField(max_length=1000)
+    content = models.TextField(max_length=5000)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     upvotes = models.IntegerField(default=0, editable=False)
@@ -45,7 +45,7 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         return f'{self.thread.get_absolute_url()}#{self.pk}'
-    
+
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, null=True, on_delete=models.CASCADE)
