@@ -2,8 +2,8 @@
 from django.forms import ModelForm, Textarea
 from .models import Comment
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit
-from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
+from crispy_forms.layout import Layout
+from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 
 class CommentForm(ModelForm):
     class Meta:

@@ -7,17 +7,24 @@
 <div class="container">
     {{ thread.topic }}
     <h1>{{ thread.title }}</h1>
-    <p>{{ thread.get_content_markdown | safe }}</p>
-    <div>
-        <a class="mx-auto" href={% url 'upvote' thread.id %} style="width: 100%;">추천</a> {{ thread.upvotes }}
+    <p>{{ thread.get_content_markdown | safe | linebreaks }}</p>
+    <div class="my-4" style="width: 100px;">
+        <span class="p-2" style="width: 50px; border: solid 1px; border-radius: 10px;">
+            <a href={% url 'upvote' thread.id %} style="text-decoration: none; color: red">추천 {{ thread.upvotes }}</a>
+        </span>
     </div>
-    <form method='POST' action='{% url 'submit-comment' thread.pk %}' style="display: inline"> {% csrf_token %}
-        {% crispy form %}
-    </form>
+    <div class="my-3" id="comment">
+        댓글
+        <form method='POST' action='{% url 'submit-comment' thread.pk %}' style="display: inline"> {% csrf_token %}
+            {% crispy form %}
+        </form>
+    </div>
     {% if thread.comment_set.exists %}
         {% for comment in thread.comment_set.iterator %}
+        <div id="comment-{{ comment.pk }}">
             {{ comment.author }} {{comment.created_at }}
             <p>{{ comment.content }}</p>
+        </div>
         {% endfor %}
     {% endif %}
 </div>

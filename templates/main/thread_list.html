@@ -4,9 +4,17 @@
 {% block main-area %}
 <div class="container">
     {% for thread in thread_list %}
-        <a href="{{ thread.get_absolute_url }}"><h1>{{ thread.title }}</h1></a><span>{{ thread.created_at }}</span>
-        <p>{{ thread.get_content_markdown | truncatewords_html:45 | safe }}</p>
-        {{ thread.likes }}
+        <div class="d-flex my-5">
+            <div class="bg-light" style="width: 30px;">
+                <div class="mx-auto" style="width: 10px;">{{ thread.upvotes }}</div>
+            </div>
+            <div class="" style="max-width: 90%;">
+                <span class="badge-dark">{{ thread.topic }}</span>
+                <a href="{{ thread.get_absolute_url }}"><h3>{{ thread.title }}</h3></a><span>{{ thread.created_at }}</span>
+                <p>{{ thread.get_content_markdown | truncatewords_html:45 | safe }}</p>
+                <a href="{{ thread.get_absolute_url }}#comment">댓글 {{ thread.comment_set.count }}개</a>
+            </div>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}

@@ -6,13 +6,16 @@ from .forms import CommentForm
 
 class ThreadList(ListView):
     model = Thread
+    paginate_by: 10
+
+    ordering = ['-upvotes']
 
 # class ThreadDetail(DetailView):
 #     model = Thread
 
 class ThreadCreate(CreateView):
     model = Thread
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'topic']
 
 class CommentList(ListView):
     model = Comment
