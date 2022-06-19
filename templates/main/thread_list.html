@@ -4,7 +4,7 @@
 {% block main-area %}
     {% for thread in thread_list %}
         <a href="{{ thread.get_absolute_url }}"><h1>{{ thread.title }}</h1></a><span>{{ thread.created_at }}</span>
-        <p>{{ thread.content }}</p>
+        <p>{{ thread.get_content_markdown | truncatewords_html:45 | safe }}</p>
         {{ thread.likes }}
     {% endfor %}
 {% endblock %}

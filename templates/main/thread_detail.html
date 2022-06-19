@@ -6,7 +6,7 @@
 {% block main-area %}
 {{ thread.topic }}
 <h1>{{ thread.title }}</h1>
-<p>{{ thread.content }}</p>
+<p>{{ thread.get_content_markdown | safe }}</p>
 <a href={% url 'upvote' thread.id %}>upvote</a>
 {{ thread.upvotes }}
 

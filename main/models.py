@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.urls import reverse
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdown
 
 class Topic(models.Model):
     topic = models.CharField(max_length=10, unique=True)
@@ -16,7 +18,7 @@ class Topic(models.Model):
 class Thread(models.Model):
     topic = models.ForeignKey(Topic, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=100)
-    content = models.TextField(max_length=5000)
+    content = MarkdownxField(max_length=5000)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     upvotes = models.IntegerField(default=0, editable=False)
@@ -29,6 +31,9 @@ class Thread(models.Model):
 
     def get_absolute_url(self):
         return f'/{self.pk}'
+
+    def get_content_markdown(self):
+        return markdown(self.content)
 
 class Comment(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
