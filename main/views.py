@@ -6,7 +6,7 @@ from .forms import CommentForm
 
 class ThreadList(ListView):
     model = Thread
-    paginate_by: 10
+    paginate_by = 5
 
     ordering = ['-upvotes']
 
