@@ -1,11 +1,16 @@
+<!DOCTYPE html>
 <html>
+    {% load static %}
 <head>
+    <link rel="stylesheet" href="{% static '/bootstrap.min.css' %}" media="screen">
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
+    <script src="{% static 'jquery.slim.min.js' %}"></script>
+    <script src="{% static '/bootstrap.bundle.min.js' %}"></script>
+    {% include 'main/navbar.html' %}
     {% block main-area %}{% endblock %}
-
     {% include 'main/footer.html'%}
 </body>
 </html>

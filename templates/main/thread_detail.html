@@ -4,21 +4,21 @@
 {% block title %} {{ thread.title }} - Thread {% endblock %}
 
 {% block main-area %}
-{{ thread.topic }}
-<h1>{{ thread.title }}</h1>
-<p>{{ thread.get_content_markdown | safe }}</p>
-<a href={% url 'upvote' thread.id %}>upvote</a>
-{{ thread.upvotes }}
-
-<form method='POST' action='{% url 'submit-comment' thread.pk %}'> {% csrf_token %}
-    {{ form | crispy }}
-    <button type="submit">submit</button>
-</form>
-
-{% if thread.comment_set.exists %}
-    {% for comment in thread.comment_set.iterator %}
-        {{ comment.author }} {{comment.created_at }}
-        <p>{{ comment.content }}</p>
-    {% endfor %}
-{% endif %}
+<div class="container">
+    {{ thread.topic }}
+    <h1>{{ thread.title }}</h1>
+    <p>{{ thread.get_content_markdown | safe }}</p>
+    <div>
+        <a class="mx-auto" href={% url 'upvote' thread.id %} style="width: 100%;">추천</a> {{ thread.upvotes }}
+    </div>
+    <form method='POST' action='{% url 'submit-comment' thread.pk %}' style="display: inline"> {% csrf_token %}
+        {% crispy form %}
+    </form>
+    {% if thread.comment_set.exists %}
+        {% for comment in thread.comment_set.iterator %}
+            {{ comment.author }} {{comment.created_at }}
+            <p>{{ comment.content }}</p>
+        {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}
