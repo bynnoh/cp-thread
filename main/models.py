@@ -17,6 +17,7 @@ class Thread(models.Model):
     topic = models.ForeignKey(Topic, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=100)
     content = MarkdownxField(max_length=5000)
+    image = models.ImageField(upload_to='main/images/%Y/%m/%d/', blank=True)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     upvotes = models.IntegerField(default=0, editable=False)
@@ -36,6 +37,7 @@ class Thread(models.Model):
 class Comment(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     content = MarkdownxField(max_length=5000)
+    image = models.ImageField(upload_to='main/images/%Y/%m/%d/', blank=True)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     upvotes = models.IntegerField(default=0, editable=False)
@@ -53,6 +55,3 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, null=True, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, null=True, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = (('user', 'thread'), ('user', 'comment'))
