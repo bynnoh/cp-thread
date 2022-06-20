@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.ThreadList.as_view()),
     path('<int:pk>', views.thread_detail, name='thread-detail'),
+    path('<int:pk>/update', views.ThreadUpdate.as_view(), name='thread-update'),
     path('<int:pk>/submit-comment', views.submit_comment, name='submit-comment'),
     path('markdownx/', include('markdownx.urls')),
     path('upvote/<int:pk>', views.upvote_thread, name='upvote'),

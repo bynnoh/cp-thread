@@ -1,6 +1,7 @@
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
 from .models import Topic, Thread, Comment, Vote
 from .forms import ThreadForm, CommentForm
 
@@ -48,6 +49,17 @@ class ThreadCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 #         'main/thread_detail.html',
 #         thread
 #     )
+
+class ThreadUpdate(LoginRequiredMixin, UpdateView):
+    model = Thread
+    form_class = ThreadForm
+    template_name = 'main/thread_update.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user == self.get_object().author:
+            return super(ThreadUpdate, self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
 class CommentList(ListView):
     model = Comment
