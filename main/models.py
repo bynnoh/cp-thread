@@ -56,6 +56,9 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return f'{self.thread.get_absolute_url()}#{self.pk}'
 
+    class Meta:
+        ordering = ['-upvotes']
+
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, null=True, on_delete=models.CASCADE)
