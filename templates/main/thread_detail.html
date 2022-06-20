@@ -21,6 +21,11 @@
             <a href={% url 'downvote' thread.id %} style="text-decoration: none; color: red"><i class="fa-solid fa-arrow-down" style="color: black"></i></a>
         </span>
     </div>
+    {% if user.is_authenticated %}
+        <div>
+            <a href=""><i class="fa-solid fa-pen-to-square"></i></a>
+        </div>
+    {% endif %}
     <div class="my-3" id="comment">
         <form method='POST' action='{% url 'submit-comment' thread.pk %}' enctype="multipart/form-data"> {% csrf_token %}
             {% crispy form %}

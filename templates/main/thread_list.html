@@ -3,34 +3,52 @@
 
 {% block main-area %}
 <div class="container">
+    <div class="row" style="height: 40px;">
+        <div class="col">
+            <button class="btn btn-primary 
+            {% if user.is_authenticated %} 
+            {% else %} disabled 
+            {% endif %}"
+            style="float: right">
+                <a class="text-light" href="/submit" style="text-decoration: none;">
+                    글쓰기
+                </a>
+            </button>
+        </div>
+    </div>
     {% for thread in thread_list %}
-        <div class="d-flex my-5">
-            <div class="card bg-light" style="width: 50px;">
-                <div class="card-body mx-auto">
-                    <span>
-                        <a href={% url 'upvote' thread.id %} style="text-decoration: none;">
-                            <i class="fa-solid fa-arrow-up" style="color: black"></i>
-                            <span style="color: red;">{{ thread.upvotes | floatformat:-1 }}</span>
-                        </a>
-                    </span>
-                </div>
-            </div>
-            <div class="card" style="width: 90%;">
-                <div>
-                    <div style="padding: 16px 0 0 16px; font-size: 13px;">
-                        <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
-                        <span class="mx-2">{{ thread.author }}</span><span class="mx-2">{{ thread.created_at }}</span>
-                        <p class="my-2"><a href="{{ thread.get_absolute_url }}" style="text-decoration: none; font-size: 20px; font-weight: 600; color: black;">{{ thread.title }}</a></p>
+        <div class="row my-3">
+                <div class="card bg-light" style="width: 50px;">
+                    <div class="mx-auto" style="width: 10px;">
+                        <span>
+                            <a href={% url 'upvote' thread.id %} style="text-decoration: none;">
+                                <i class="fa-solid fa-arrow-up" style="color: black"></i>
+                            </a>
+                            <div style="text-align: center; width: 12px; color: red;">{{ thread.upvotes | floatformat:-1 }}</div>
+                            <a href={% url 'downvote' thread.id %} style="text-decoration: none;">
+                                <i class="fa-solid fa-arrow-down" style="color: black"></i>
+                            </a>
+                        </span>
                     </div>
                 </div>
-                {% if thread.image %}
-                <a href="{{ thread.get_absolute_url }}"><img src="{{ thread.image.url }}" class="card-img-top" alt="404"></a>
-                {% endif %}    
-                <div class="card-body" {% if thread.image %} style="padding-top: 16px;" {% endif %} style="padding-top: 0;">
-                    <span>
-                        <a href="{{ thread.get_absolute_url }}" style="text-decoration: none; color: initial">{{ thread.get_content_markdown | truncatewords_html:15 | safe }}</a>
-                        <a class="bg-light" href="{{ thread.get_absolute_url }}#comment" style="width: 10px; color: black; text-decoration: none;">댓글 {{ thread.comment_set.count }}개</a>
-                    </span>
+            <div class="col">
+                <div class="card" style="width: 95%;">
+                    <div>
+                        <div style="padding: 16px 0 0 16px; font-size: 13px;">
+                            <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
+                            <span class="mx-2">{{ thread.author }}</span><span class="mx-2">{{ thread.created_at }}</span>
+                            <p class="my-2"><a href="{{ thread.get_absolute_url }}" style="text-decoration: none; font-size: 20px; font-weight: 600; color: black;">{{ thread.title }}</a></p>
+                        </div>
+                    </div>
+                    {% if thread.image %}
+                    <a href="{{ thread.get_absolute_url }}"><img src="{{ thread.image.url }}" class="card-img-top" alt="404"></a>
+                    {% endif %}    
+                    <div class="card-body" {% if thread.image %} style="padding-top: 16px;" {% endif %} style="padding-top: 0;">
+                        <span>
+                            <a href="{{ thread.get_absolute_url }}" style="text-decoration: none; color: initial">{{ thread.get_content_markdown | truncatewords_html:15 | safe }}</a>
+                            <a class="bg-light" href="{{ thread.get_absolute_url }}#comment" style="width: 10px; color: black; text-decoration: none;">댓글 {{ thread.comment_set.count }}개</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
