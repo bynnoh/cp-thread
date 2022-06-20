@@ -8,7 +8,10 @@
             <div class="card bg-light" style="width: 50px;">
                 <div class="card-body mx-auto">
                     <span>
-                        <a href={% url 'upvote' thread.id %} style="text-decoration: none; color: red">{{ thread.upvotes }}</a>
+                        <a href={% url 'upvote' thread.id %} style="text-decoration: none;">
+                            <i class="fa-solid fa-arrow-up" style="color: black"></i>
+                            <span style="color: red;">{{ thread.upvotes }}</span>
+                        </a>
                     </span>
                 </div>
             </div>
