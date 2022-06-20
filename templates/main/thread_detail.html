@@ -5,9 +5,9 @@
 
 {% block main-area %}
 <div class="container">
-    <div class="my-2" style="font-size: 13px;">
+    <div class="my-2" style="font-size: 15px;">
         <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
-        <span class="mx-2">{{ thread.author }}</span><span class="mx-2">{{ thread.created_at }}</span>
+        <span class="mx-2" style="font-weight: 600;">{{ thread.author }}</span><span class="text-secondary" style="font-size: 10px;">{{ thread.created_at }}</span>
         <h3>{{ thread.title }}</h1>
     </div>
     {% if thread.image %}
@@ -17,7 +17,7 @@
     <div class="my-4" style="width: 200px;">
         <span class="p-2" style="width: 50px; border: solid 1px; border-radius: 10px;">
             <a href={% url 'upvote' thread.id %} style="text-decoration: none; color: red"><i class="fa-solid fa-arrow-up" style="color: black"></i></a>
-            {{ thread.upvotes | floatformat:-1 }}
+            <span style="font-weight: 600;">{{ thread.upvotes | floatformat:-1 }}</span>
             <a href={% url 'downvote' thread.id %} style="text-decoration: none; color: red"><i class="fa-solid fa-arrow-down" style="color: black"></i></a>
         </span>
         {% if user.is_authenticated %}
@@ -39,9 +39,19 @@
                 <div class="card">
                     <div class="media">
                         <div class="card-body">
-                            <div class="media-body mt-0">
-                                {{ comment.author }} <span class="text-secondary">{{comment.created_at }}</span>
+                            <div class="media-body mt-0">   
+                                <span class="mr-2" style="font-weight: 600; font-size: 13px;">{{ comment.author }}</span><span class="text-secondary" style="font-size: 10px;">{{comment.created_at }}</span>
                                 <p class="mb-0">{{ comment.content }}</p>
+                                    <span>
+                                        <a href={% url 'upvote-comment' comment.id %} style="text-decoration: none;">
+                                            <i class="fa-solid fa-arrow-up fa-2xs" style="color: black"></i>
+                                        </a>
+                                        <span style="text-align: center; width: 9px; color: initial; font-weight: 600; font-size: 13px;">{{ comment.upvotes | floatformat:-1 }}</span>
+                                        <a href={% url 'downvote-comment' comment.id %} style="text-decoration: none;">
+                                            <i class="fa-solid fa-arrow-down fa-2xs" style="color: black"></i>
+                                        </a>
+                                    </span>
+                                </div>        
                             </div>
                         </div>
                         {% if comment.image %}<img class="img-fluid rounded" src="{{ comment.image.url }}" style="max-width: 300px;">{% endif %}

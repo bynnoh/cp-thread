@@ -163,7 +163,7 @@ def upvote_comment(request, pk):
     if vote.filter(user=request.user):
         return redirect(target.get_absolute_url())
     else:
-        Vote.objects.create(user = request.user, thread = target)
+        Vote.objects.create(user = request.user, comment = target)
         target.upvotes += 1
         target.save()
         return redirect(target.get_absolute_url())
@@ -175,7 +175,7 @@ def downvote_comment(request, pk):
     if vote.filter(user=request.user):
         return redirect(target.get_absolute_url())
     else:
-        Vote.objects.create(user = request.user, thread = target)
+        Vote.objects.create(user = request.user, comment = target)
         target.upvotes -= 1
         target.save()
         return redirect(target.get_absolute_url())
