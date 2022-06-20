@@ -11,6 +11,11 @@ class ThreadList(ListView):
 
     ordering = ['-upvotes']
 
+    def get_context_data(self, **kwargs):
+        context = super(ThreadList, self).get_context_data()
+        context['topics'] = Topic.objects.all()
+        return context
+
 # class ThreadDetail(DetailView):
 #     model = Thread
 
@@ -110,10 +115,12 @@ def submit_comment(request, pk):
         return redirect(thread.get_absolute_url())
 
 def topic_page(request, slug):
+    topics = Topic.objects.all()
     topic = Topic.objects.get(slug=slug)
     thread_list = Thread.objects.filter(topic=topic)
 
     context = {
+        'topics': topics,
         'topic': topic,
         'thread_list': thread_list
     }
@@ -135,7 +142,6 @@ def upvote_thread(request, pk):
         target.upvotes += 1
         target.save()
         return redirect(target.get_absolute_url())
-
 
 def downvote_thread(request, pk):
     target = get_object_or_404(Thread, id=pk)
