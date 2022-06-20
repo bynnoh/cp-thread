@@ -1,8 +1,8 @@
-from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Topic, Thread, Comment, Vote
-from .forms import CommentForm
+from .forms import ThreadForm, CommentForm
 
 class ThreadList(ListView):
     model = Thread
@@ -15,7 +15,28 @@ class ThreadList(ListView):
 
 class ThreadCreate(CreateView):
     model = Thread
-    fields = ['title', 'content', 'topic']
+    form_class = ThreadForm
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(ThreadCreate, self).get_context_data(**kwargs)
+    #     context['image'] = self.request.FILES
+    #     return context
+
+# def submit_thread(request):
+#     if request.method == 'POST':
+#         form = ThreadForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#     else:
+#         form = ThreadForm()
+
+#     thread = get_object_or_404(Thread, pk=request.pk)
+
+#     return render(
+#         request,
+#         'main/thread_detail.html',
+#         thread
+#     )
 
 class CommentList(ListView):
     model = Comment
@@ -25,7 +46,7 @@ class CommentDetail(DetailView):
 
 class CommentCreate(CreateView):
     model = Comment
-    fields = ['content']
+    fields = ['content', 'image']
     # http_method_names = ['POST']
     # template_name = 'thread_detail.html'
     # model = Comment
@@ -55,7 +76,7 @@ def submit_comment(request, pk):
     thread = Thread.objects.get(pk=pk)
 
     if request.method == "POST":
-        form = CommentForm(request.POST)
+        form = CommentForm(request.POST, request.FILES)
         form.save(commit=False)
         form.instance.thread = thread
         form.save()

@@ -3,9 +3,9 @@
 
 {% block main-area %}
 
-<form method='POST'> {% csrf_token %}
+<form method='POST' enctype="multipart/form-data"> {% csrf_token %}
     <table>
-        {{ form | crispy }}
+        {{ form }}
     </table>
     <button action="submit">submit</button>
 </form>
