@@ -102,6 +102,7 @@ def submit_comment(request, pk):
         form = CommentForm(request.POST, request.FILES)
         form.save(commit=False)
         form.instance.thread = thread
+        form.instance.author = request.user
         form.save()
         return redirect(thread.get_absolute_url())
 
