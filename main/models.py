@@ -37,7 +37,7 @@ class Thread(models.Model):
 
 class Comment(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
-    content = models.TextField(max_length=5000)
+    content = MarkdownxField(max_length=5000)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     upvotes = models.IntegerField(default=0, editable=False)
