@@ -5,10 +5,10 @@
 
 {% block main-area %}
 <div class="container">
-    <div class="my-2">
+    <div class="my-2" style="font-size: 13px;">
         <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
-        <h1>{{ thread.title }}</h1>
-        <span class="text-secondary">{{ thread.created_at }}</span>
+        <span class="mx-2">{{ thread.author }}</span><span class="mx-2">{{ thread.created_at }}</span>
+        <h3>{{ thread.title }}</h1>
     </div>
     {% if thread.image %}
         <img class="img-fluid" src="{{ thread.image.url }}" alt="404" style="max-width: 100%;">
@@ -16,7 +16,9 @@
     <p>{{ thread.get_content_markdown | safe | linebreaks }}</p>
     <div class="my-4" style="width: 100px;">
         <span class="p-2" style="width: 50px; border: solid 1px; border-radius: 10px;">
-            <a href={% url 'upvote' thread.id %} style="text-decoration: none; color: red">추천 {{ thread.upvotes }}</a>
+            <a href={% url 'upvote' thread.id %} style="text-decoration: none; color: red"><i class="fa-solid fa-arrow-up" style="color: black"></i></a>
+            {{ thread.upvotes | floatformat:-1 }}
+            <a href={% url 'downvote' thread.id %} style="text-decoration: none; color: red"><i class="fa-solid fa-arrow-down" style="color: black"></i></a>
         </span>
     </div>
     <div class="my-3" id="comment">
@@ -26,13 +28,17 @@
     </div>
     {% if thread.comment_set.exists %}
         {% for comment in thread.comment_set.iterator %}
-        <div class="card" id="comment-{{ comment.pk }}">
-            <div class="card-body">
-            <p>{{ comment.author }} <span class="text-secondary">{{comment.created_at }}</span></p>
-            <p>{% if comment.image %}<img class="img-fluid" src="{{ comment.image.url }}" style="max-width: 500px">{% endif %}</p>
-            <p>{{ comment.content }}</p>
+            <div class="card" id="comment-{{ comment.pk }}">
+                <div class="card-body">
+                    <div class="media">
+                        {% if comment.image %}<img class="align-self" src="{{ comment.image.url }}" style="width: 300px;">{% endif %}
+                        <div class="media-body">
+                            {{ comment.author }} <span class="text-secondary">{{comment.created_at }}</span>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
         {% endfor %}
     {% endif %}
 </div>

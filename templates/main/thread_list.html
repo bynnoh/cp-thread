@@ -10,14 +10,14 @@
                     <span>
                         <a href={% url 'upvote' thread.id %} style="text-decoration: none;">
                             <i class="fa-solid fa-arrow-up" style="color: black"></i>
-                            <span style="color: red;">{{ thread.upvotes }}</span>
+                            <span style="color: red;">{{ thread.upvotes | floatformat:-1 }}</span>
                         </a>
                     </span>
                 </div>
             </div>
             <div class="card" style="width: 90%;">
                 <div>
-                    <div style="padding: 16px 0 0 16px;">
+                    <div style="padding: 16px 0 0 16px; font-size: 13px;">
                         <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
                         <span class="mx-2">{{ thread.author }}</span><span class="mx-2">{{ thread.created_at }}</span>
                         <p class="my-2"><a href="{{ thread.get_absolute_url }}" style="text-decoration: none; font-size: 20px; font-weight: 600; color: black;">{{ thread.title }}</a></p>

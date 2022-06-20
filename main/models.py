@@ -21,7 +21,7 @@ class Thread(models.Model):
     image = models.ImageField(upload_to='main/images/%Y/%m/%d/', blank=True)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
-    upvotes = models.IntegerField(default=0, editable=False)
+    upvotes = models.FloatField(default=0, editable=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

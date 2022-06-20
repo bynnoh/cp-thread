@@ -1,4 +1,3 @@
-from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Topic, Thread, Comment, Vote
@@ -109,5 +108,18 @@ def upvote_thread(request, pk):
     else:
         Vote.objects.create(user = request.user, thread = target)
         target.upvotes += 1
+        target.save()
+        return redirect(target.get_absolute_url())
+
+
+def downvote_thread(request, pk):
+    target = get_object_or_404(Thread, id=pk)
+    vote = Vote.objects.filter(thread=target)
+
+    if vote.filter(user=request.user):
+        return redirect(target.get_absolute_url())
+    else:
+        Vote.objects.create(user = request.user, thread = target)
+        target.upvotes -= 1
         target.save()
         return redirect(target.get_absolute_url())
