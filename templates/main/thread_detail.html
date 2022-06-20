@@ -20,13 +20,13 @@
             {{ thread.upvotes | floatformat:-1 }}
             <a href={% url 'downvote' thread.id %} style="text-decoration: none; color: red"><i class="fa-solid fa-arrow-down" style="color: black"></i></a>
         </span>
-        <span class="p-2" style="width: 50px; border: solid 1px; border-radius: 10px;">
-            {% if user.is_authenticated %}
-                {% if user == thread.author %}
-                <a href="{{ thread.get_absolute_url }}/update" style="color: initial"><i class="fa-solid fa-pen-to-square"></i>수정</a>
-                {% endif %}
+        {% if user.is_authenticated %}
+            {% if user == thread.author %}
+                <span class="p-2" style="width: 50px; border: solid 1px; border-radius: 10px;">
+                    <a href="{{ thread.get_absolute_url }}/update" style="color: initial"><i class="fa-solid fa-pen-to-square"></i>수정</a>
+                </span>
             {% endif %}
-        </span>
+        {% endif %}
     </div>
     <div id="comment">
         <form method='POST' action='{% url 'submit-comment' thread.pk %}' enctype="multipart/form-data"> {% csrf_token %}

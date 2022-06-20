@@ -49,15 +49,18 @@
       </div>
       {% load socialaccount %}
       <div class="modal-body">
-        <div class="row my-1">
+        <div class="my-1">
             <a role="button" type="button" class="btn btn-outline-dark btn-block" href="{% provider_login_url 'google' %}"><i class="fab fa-google"></i>&nbsp&nbsp Log in with Google</a>
           </div>
-          <div class="row my-1">
+          <div class="my-1">
             <a role="button" type="button" class="btn btn-outline-dark btn-block" href="/account/login"><i class="far fa-envelope"></i>&nbsp&nbsp Log in with E-mail</a>
           </div>
-          <div class="row my-1">
-            <button type="button" class="btn btn-outline-dark btn-block"><i class="far fa-envelope"></i>&nbsp&nbsp Sign Up with E-mail</button>
+          <div class="my-1">
+            <a role="button" type="button" class="btn btn-outline-dark btn-block" href="/account/signup"><i class="far fa-envelope"></i>&nbsp&nbsp Sign Up with E-mail</a>
           </div>
+        </div>
+        <div class="modal-footer">
+          <a role="button" type="button" class="btn btn-outline-dark btn-block" href="/account/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp&nbsp Logout</a>
         </div>
       </div>
     </div>
