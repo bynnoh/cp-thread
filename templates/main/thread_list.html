@@ -5,16 +5,25 @@
 <div class="container">
     {% for thread in thread_list %}
         <div class="d-flex my-5">
-            <div class="bg-light" style="width: 30px;">
-                <div class="mx-auto" style="width: 10px;">{{ thread.upvotes }}</div>
+            <div class="card bg-light" style="width: 50px;">
+                <div class="card-body mx-auto">
+                    <span>
+                        <a href={% url 'upvote' thread.id %} style="text-decoration: none; color: red">{{ thread.upvotes }}</a>
+                    </span>
+                </div>
             </div>
-            <div class="" style="max-width: 90%;">
-                <span class="badge-dark">{{ thread.topic }}</span>
-                <a href="{{ thread.get_absolute_url }}"><h3>{{ thread.title }}</h3></a>
-                <span>{{ thread.author }}</span>
-                <span>{{ thread.created_at }}</span>
-                <p>{{ thread.get_content_markdown | truncatewords_html:45 | safe }}</p>
-                <a href="{{ thread.get_absolute_url }}#comment">댓글 {{ thread.comment_set.count }}개</a>
+            <div class="card" style="width: 90%;">
+                {% if thread.image %}
+                <img src="{{ thread.image.url }}" class="card-img-top" alt="404">
+                {% endif %}
+                <div class="card-body">
+                    <span class="badge-dark">{{ thread.topic }}</span>
+                    <a href="{{ thread.get_absolute_url }}"><h3>{{ thread.title }}</h3></a>
+                    <span>{{ thread.author }}</span>
+                    <span>{{ thread.created_at }}</span>
+                    <p>{{ thread.get_content_markdown | truncatewords_html:45 | safe }}</p>
+                    <a href="{{ thread.get_absolute_url }}#comment">댓글 {{ thread.comment_set.count }}개</a>
+                </div>
             </div>
         </div>
     {% endfor %}
