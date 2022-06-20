@@ -7,7 +7,10 @@
 <div class="container">
     {{ thread.topic }}
     <h1>{{ thread.title }}</h1>
-    <img class="img-fluid" src="{{ thread.image.url }}" alt="404" style="max-width: 100%;">
+    <span class="text-secondary">{{ thread.created_at }}</span>
+    {% if thread.image %}
+        <img class="img-fluid" src="{{ thread.image.url }}" alt="404" style="max-width: 100%;">
+    {% endif %}
     <p>{{ thread.get_content_markdown | safe | linebreaks }}</p>
     <div class="my-4" style="width: 100px;">
         <span class="p-2" style="width: 50px; border: solid 1px; border-radius: 10px;">
@@ -15,15 +18,18 @@
         </span>
     </div>
     <div class="my-3" id="comment">
-        <form method='POST' action='{% url 'submit-comment' thread.pk %}'> {% csrf_token %}
+        <form method='POST' action='{% url 'submit-comment' thread.pk %}' enctype="multipart/form-data"> {% csrf_token %}
             {% crispy form %}
         </form>
     </div>
     {% if thread.comment_set.exists %}
         {% for comment in thread.comment_set.iterator %}
-        <div id="comment-{{ comment.pk }}">
-            {{ comment.author }} {{comment.created_at }}
-            <p>{% if comment.image %}<img src="{{ comment.image.url }}">{% endif %} {{ comment.content }}</p>
+        <div class="card" id="comment-{{ comment.pk }}">
+            <div class="card-body">
+            <p>{{ comment.author }} <span class="text-secondary">{{comment.created_at }}</span></p>
+            <p>{% if comment.image %}<img class="img-fluid" src="{{ comment.image.url }}" style="max-width: 500px">{% endif %}</p>
+            <p>{{ comment.content }}</p>
+            </div>
         </div>
         {% endfor %}
     {% endif %}
