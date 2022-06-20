@@ -1,7 +1,5 @@
 from django.db import models
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.urls import reverse
 from markdownx.models import MarkdownxField
 from markdownx.utils import markdown
 
@@ -57,6 +55,4 @@ class Vote(models.Model):
     comment = models.ForeignKey(Comment, null=True, on_delete=models.CASCADE)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint('user', 'thread', 'comment', name='user_and_tc')
-        ]
+        unique_together = (('user', 'thread'), ('user', 'comment'))
