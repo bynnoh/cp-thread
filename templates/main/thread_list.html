@@ -16,16 +16,21 @@
                 </div>
             </div>
             <div class="card" style="width: 90%;">
+                <div>
+                    <div style="padding: 16px 0 0 16px;">
+                        <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
+                        <span class="mx-2">{{ thread.author }}</span><span class="mx-2">{{ thread.created_at }}</span>
+                        <p class="my-2"><a href="{{ thread.get_absolute_url }}" style="text-decoration: none; font-size: 20px; font-weight: 600; color: black;">{{ thread.title }}</a></p>
+                    </div>
+                </div>
                 {% if thread.image %}
-                <img src="{{ thread.image.url }}" class="card-img-top" alt="404">
-                {% endif %}
-                <div class="card-body">
-                    <span class="badge-dark">{{ thread.topic }}</span>
-                    <a href="{{ thread.get_absolute_url }}"><h3>{{ thread.title }}</h3></a>
-                    <span>{{ thread.author }}</span>
-                    <span>{{ thread.created_at }}</span>
-                    <p>{{ thread.get_content_markdown | truncatewords_html:45 | safe }}</p>
-                    <a href="{{ thread.get_absolute_url }}#comment">댓글 {{ thread.comment_set.count }}개</a>
+                <a href="{{ thread.get_absolute_url }}"><img src="{{ thread.image.url }}" class="card-img-top" alt="404"></a>
+                {% endif %}    
+                <div class="card-body" {% if thread.image %} style="padding-top: 16px;" {% endif %} style="padding-top: 0;">
+                    <span>
+                        <a href="{{ thread.get_absolute_url }}" style="text-decoration: none; color: initial">{{ thread.get_content_markdown | truncatewords_html:15 | safe }}</a>
+                        <a class="bg-light" href="{{ thread.get_absolute_url }}#comment" style="width: 10px; color: black; text-decoration: none;">댓글 {{ thread.comment_set.count }}개</a>
+                    </span>
                 </div>
             </div>
         </div>

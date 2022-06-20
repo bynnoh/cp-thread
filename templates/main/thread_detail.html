@@ -5,9 +5,11 @@
 
 {% block main-area %}
 <div class="container">
-    {{ thread.topic }}
-    <h1>{{ thread.title }}</h1>
-    <span class="text-secondary">{{ thread.created_at }}</span>
+    <div class="my-2">
+        <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
+        <h1>{{ thread.title }}</h1>
+        <span class="text-secondary">{{ thread.created_at }}</span>
+    </div>
     {% if thread.image %}
         <img class="img-fluid" src="{{ thread.image.url }}" alt="404" style="max-width: 100%;">
     {% endif %}

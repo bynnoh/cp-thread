@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from markdownx.models import MarkdownxField
 from markdownx.utils import markdown
 
@@ -30,6 +31,10 @@ class Thread(models.Model):
 
     def get_absolute_url(self):
         return f'/{self.pk}'
+
+    def get_topic_url(self):
+        topic = get_object_or_404(Topic, topic=self.topic)
+        return f'/topic/{topic.slug}'
 
     def get_content_markdown(self):
         return markdown(self.content)
