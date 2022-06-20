@@ -16,7 +16,7 @@
     {% for thread in thread_list %}
         <div class="row my-3">
                 <div class="card bg-light" style="width: 40px;">
-                    <div class="mx-auto" style="width: 10px;">
+                    <div class="mx-auto" style="width: 10px; padding-top: 16px;">
                         <span>
                             <a href={% url 'upvote' thread.id %} style="text-decoration: none;">
                                 <i class="fa-solid fa-arrow-up" style="color: black"></i>
@@ -32,8 +32,8 @@
                 <div class="card">
                     <div>
                         <div style="padding: 16px 0 0 16px; font-size: 13px;">
-                            <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
-                            <span class="mx-2">{{ thread.author }}</span><span class="mx-2">{{ thread.created_at }}</span>
+                            <span><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black; font-weight: 600;">/{{ thread.topic }}</a></span>
+                            <span class="mx-1" style="font-weight: 600;">{{ thread.author }}</span><span class="text-secondary" style="font-size: 10px;">{{ thread.created_at }}</span>
                             <p class="my-2"><a href="{{ thread.get_absolute_url }}" style="text-decoration: none; font-size: 20px; font-weight: 600; color: black;">{{ thread.title }}</a></p>
                         </div>
                     </div>

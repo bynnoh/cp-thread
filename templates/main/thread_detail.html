@@ -5,15 +5,29 @@
 
 {% block main-area %}
 <div class="container">
-    <div class="my-2" style="font-size: 15px;">
-        <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
-        <span class="mx-2" style="font-weight: 600;">{{ thread.author }}</span><span class="text-secondary" style="font-size: 10px;">{{ thread.created_at }}</span>
-        <h3>{{ thread.title }}</h1>
+    <div class="row" style="font-size: 15px;">
+        <div class="col">
+            <span class="my-2"><b><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black">/{{ thread.topic }}</a></b></span>
+            <span class="mx-2" style="font-weight: 600;">{{ thread.author }}</span><span class="text-secondary" style="font-size: 10px;">{{ thread.created_at }}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3>{{ thread.title }}</h3>
+        </div>
     </div>
     {% if thread.image %}
-        <img class="img-fluid" src="{{ thread.image.url }}" alt="404" style="max-width: 100%;">
+    <div class="row">
+        <div class="col">
+            <img class="img-fluid" src="{{ thread.image.url }}" alt="404" style="max-width: 100%;">
+        </div>
+    </div>
     {% endif %}
-    <p>{{ thread.get_content_markdown | safe | linebreaks }}</p>
+    <div class="row">
+        <div class="col">
+            {{ thread.get_content_markdown | safe | linebreaks }}
+        </div>
+    </div>
     <div class="my-4" style="width: 200px;">
         <span class="p-2" style="width: 50px; border: solid 1px; border-radius: 10px;">
             <a href={% url 'upvote' thread.id %} style="text-decoration: none; color: red"><i class="fa-solid fa-arrow-up" style="color: black"></i></a>
@@ -28,15 +42,10 @@
             {% endif %}
         {% endif %}
     </div>
-    <div id="comment">
-        <form method='POST' action='{% url 'submit-comment' thread.pk %}' enctype="multipart/form-data"> {% csrf_token %}
-            {% crispy form %}
-        </form>
-    </div>
     {% if thread.comment_set.exists %}
         {% for comment in thread.comment_set.iterator %}
             <div id="comment-{{ comment.pk }}">
-                <div class="card">
+                <div class="card my-1">
                     <div class="media">
                         <div class="card-body">
                             <div class="media-body mt-0">   
@@ -53,12 +62,31 @@
                                     </span>
                                 </div>        
                             </div>
+                            {% if comment.image %}<img class="img-fluid rounded" src="{{ comment.image.url }}" style="max-width: 300px;">{% endif %}
                         </div>
-                        {% if comment.image %}<img class="img-fluid rounded" src="{{ comment.image.url }}" style="max-width: 300px;">{% endif %}
                     </div>
                 </div>
-            </div>
         {% endfor %}
     {% endif %}
+        <div class="p-0">
+            {% if user.is_authenticated %}
+                <div class="my-3 col-12" id="comment">
+                    <form method='POST' action='{% url 'submit-comment' thread.pk %}' enctype="multipart/form-data"> {% csrf_token %}
+                        <div class="row">
+                            <textarea class="form-control col-11 d-inline" name="content"></textarea>
+                            <button class="btn btn-primary col-1" type="submit">작성</button>
+                        </div>
+                        <div class="row">
+                            <input type="file" name="image" accept="image/*">
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                <div class="col-6 mx-auto" id="comment">
+                    댓글을 남기려면 로그인이 필요합니다.
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}

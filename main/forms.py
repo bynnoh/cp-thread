@@ -1,8 +1,8 @@
-
-from django.forms import ModelForm, Textarea
+from django import forms
+from django.forms import ModelForm
 from .models import Thread, Comment
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field
+from crispy_forms.layout import Layout, Div
 from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 
 class ThreadForm(ModelForm):
@@ -10,7 +10,7 @@ class ThreadForm(ModelForm):
         model = Thread
         fields = ['title', 'content', 'image', 'topic']
         widgets = {
-            'content': Textarea(attrs={'cols': 12, 'rows': 3}),
+            'content': forms.Textarea(attrs={'cols': 12, 'rows': 3}),
         }
 
 class CommentForm(ModelForm):
@@ -18,18 +18,21 @@ class CommentForm(ModelForm):
         model = Comment
         fields = ['content', 'image']
         labels = {
-            'content': '댓글',
-            'image': '댓글 이미지 첨부'
+            'content': '',
+            'image': ''
+        }
+        widgets = {
+            'image': forms.FileInput(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.fields['content'].widget.attrs = {'cols': 100, 'rows': 3}
+        self.fields['content'].widget.attrs = {'cols': 100, 'rows': 2,}
         self.helper.layout = Layout(
-            FieldWithButtons(
+            Div(
+                Div(FieldWithButtons(
                 'content',
-                StrictButton("댓글 작성", type="submit", css_class="btn-primary"),
-            ),
-            Field('image')
+                StrictButton("작성", type="submit", css_class="btn-primary"),
+            ), css_class="p-0"), Div('image', css_class="col-2 p-0")),
         )
