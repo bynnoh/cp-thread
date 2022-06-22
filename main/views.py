@@ -5,6 +5,23 @@ from django.core.exceptions import PermissionDenied
 from .models import Topic, Thread, Comment, Vote
 from .forms import ThreadForm, CommentForm
 
+def topic_page(request, slug):
+    topics = Topic.objects.all()
+    topic = Topic.objects.get(slug=slug)
+    thread_list = Thread.objects.filter(topic=topic)
+
+    context = {
+        'topics': topics,
+        'topic': topic,
+        'thread_list': thread_list
+    }
+
+    return render(
+        request,
+        'main/thread_list.html',
+        context
+    )
+
 class ThreadList(ListView):
     model = Thread
     paginate_by = 10
@@ -18,6 +35,19 @@ class ThreadList(ListView):
 
 # class ThreadDetail(DetailView):
 #     model = Thread
+
+def thread_detail(request, pk):
+    thread = get_object_or_404(Thread, pk=pk)
+    form = CommentForm()
+
+    return render(
+        request,
+        'main/thread_detail.html',
+        {
+            'thread': thread, 
+            'form': form
+        }
+    )
 
 class ThreadCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Thread
@@ -87,36 +117,6 @@ class CommentCreate(CreateView):
     # def get_success_url(self):
     #     return reverse('thread-detail', kwargs={'pk': self.kwargs.get("pk")})
 
-def thread_detail(request, pk):
-    thread = get_object_or_404(Thread, pk=pk)
-    form = CommentForm()
-
-    return render(
-        request,
-        'main/thread_detail.html',
-        {
-            'thread': thread, 
-            'form': form
-        }
-    )
-
-def topic_page(request, slug):
-    topics = Topic.objects.all()
-    topic = Topic.objects.get(slug=slug)
-    thread_list = Thread.objects.filter(topic=topic)
-
-    context = {
-        'topics': topics,
-        'topic': topic,
-        'thread_list': thread_list
-    }
-
-    return render(
-        request,
-        'main/thread_list.html',
-        context
-    )
-
 def submit_comment(request, pk):
     thread = Thread.objects.get(pk=pk)
 
@@ -132,11 +132,13 @@ def submit_comment(request, pk):
         return redirect(thread.get_absolute_url())
 
 def submit_reply(request, pk):
-    comment = Comment.objects.get(pk=pk)
+    comment = get_object_or_404(Comment, id=pk)
+    thread = comment.thread
 
     if request.method == "POST":
         form = CommentForm(request.POST, request.FILES)
         form.save(commit=False)
+        form.instance.thread = thread
         form.instance.parent = comment
         form.instance.author = request.user
         form.save()
@@ -144,7 +146,6 @@ def submit_reply(request, pk):
 
     else:
         return redirect(comment.get_absolute_url())
-
 
 def upvote_thread(request, pk):
     target = get_object_or_404(Thread, id=pk)
@@ -169,7 +170,6 @@ def downvote_thread(request, pk):
         target.upvotes -= 1
         target.save()
         return redirect(target.get_absolute_url())
-
 
 def upvote_comment(request, pk):
     target = get_object_or_404(Comment, id=pk)

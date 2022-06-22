@@ -44,28 +44,72 @@
     </div>
     {% if thread.comment_set.exists %}
         {% for comment in thread.comment_set.iterator %}
+            {% if comment.parent == null %}
             <div id="comment-{{ comment.pk }}">
                 <div class="card my-1">
-                    <div class="media">
-                        <div class="card-body">
-                            <div class="media-body mt-0">   
+                    <div class="card-body">
+                        <div class="media">
+                            {% if comment.image %}<img class="img-fluid rounded mr-3" src="{{ comment.image.url }}" style="">{% endif %}
+                            <div class="media-body mt-0">
                                 <span class="mr-2" style="font-weight: 600; font-size: 13px;">{{ comment.author }}</span><span class="text-secondary" style="font-size: 10px;">{{comment.created_at }}</span>
                                 <p class="mb-0">{{ comment.content }}</p>
-                                    <span>
-                                        <a href={% url 'upvote-comment' comment.id %} style="text-decoration: none;">
-                                            <i class="fa-solid fa-arrow-up fa-2xs" style="color: black"></i>
-                                        </a>
-                                        <span style="text-align: center; width: 9px; color: initial; font-weight: 600; font-size: 13px;">{{ comment.upvotes | floatformat:-1 }}</span>
-                                        <a href={% url 'downvote-comment' comment.id %} style="text-decoration: none;">
-                                            <i class="fa-solid fa-arrow-down fa-2xs" style="color: black"></i>
-                                        </a>
-                                    </span>
-                                </div>        
+                                <span>
+                                    <a href={% url 'upvote-comment' comment.id %} style="text-decoration: none;">
+                                        <i class="fa-solid fa-arrow-up fa-2xs" style="color: black"></i>
+                                    </a>
+                                    <span style="text-align: center; width: 9px; color: initial; font-weight: 600; font-size: 13px;">{{ comment.upvotes | floatformat:-1 }}</span>
+                                    <a href={% url 'downvote-comment' comment.id %} style="text-decoration: none;">
+                                        <i class="fa-solid fa-arrow-down fa-2xs" style="color: black"></i>
+                                    </a>
+                                </span>
+                            {% if user.is_authenticated %}
+                                <span>
+                                    <button class="btn btn-sm" type="button" data-toggle="collapse" data-target="#rep-{{ comment.pk }}" aria-expanded="false" aria-controls="rep">
+                                        답글
+                                    </button>
+                                </span>
+                                <div class="collapse" id="rep-{{ comment.pk }}">
+                                    <div class="media-body mx-auto mt-3" style="max-width: 95%;">
+                                        <form method='POST' action='{% url 'submit-reply' comment.pk %}' enctype="multipart/form-data"> {% csrf_token %}
+                                            <div class="row">
+                                                <textarea class="form-control col-11 d-inline" name="content" style=""></textarea>
+                                                <button class="btn btn-primary col-sm-1" type="submit">작성</button>
+                                            </div>
+                                            <div class="row">
+                                                <input type="file" name="image" accept="image/*">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if comment.comment_set.exists %}
+                                <div class="card">
+                                    {% for rep in comment.comment_set.iterator %}
+                                    <div class="media ml-3">
+                                        {% if rep.image %}<img class="img-fluid rounded mr-3" src="{{ rep.image.url }}" style="max-height: 150px;">{% endif %}
+                                        <div class="media-body">
+                                            <span class="mr-2" style="font-weight: 600; font-size: 13px;">{{ rep.author }}</span><span class="text-secondary" style="font-size: 10px;">{{ rep.created_at }}</span>
+                                            <p class="mb-0">{{ rep.content }}</p>
+                                            <span>
+                                                <a href={% url 'upvote-comment' rep.id %} style="text-decoration: none;">
+                                                    <i class="fa-solid fa-arrow-up fa-2xs" style="color: black"></i>
+                                                </a>
+                                                <span style="text-align: center; width: 9px; color: initial; font-weight: 600; font-size: 13px;">{{ rep.upvotes | floatformat:-1 }}</span>
+                                                <a href={% url 'downvote-comment' rep.id %} style="text-decoration: none;">
+                                                    <i class="fa-solid fa-arrow-down fa-2xs" style="color: black"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            {% if comment.image %}<img class="img-fluid rounded" src="{{ comment.image.url }}" style="max-width: 300px;">{% endif %}
+                            {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
         <div class="p-0">

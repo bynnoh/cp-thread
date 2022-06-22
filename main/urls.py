@@ -7,6 +7,7 @@ urlpatterns = [
     path('<int:pk>', views.thread_detail, name='thread-detail'),
     path('<int:pk>/update', views.ThreadUpdate.as_view(), name='thread-update'),
     path('<int:pk>/submit-comment', views.submit_comment, name='submit-comment'),
+    path('<int:pk>/submit-reply', views.submit_reply, name="submit-reply"),
     path('markdownx/', include('markdownx.urls')),
     path('upvote/<int:pk>', views.upvote_thread, name='upvote'),
     path('downvote/<int:pk>', views.downvote_thread, name='downvote'),
