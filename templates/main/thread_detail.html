@@ -83,7 +83,6 @@
                                 </div>
                             {% endif %}
                             {% if comment.comment_set.exists %}
-                                <div class="card">
                                     {% for rep in comment.comment_set.iterator %}
                                     <div class="media ml-3">
                                         {% if rep.image %}<img class="img-fluid rounded mr-3" src="{{ rep.image.url }}" style="max-height: 150px;">{% endif %}
@@ -102,7 +101,6 @@
                                         </div>
                                     </div>
                                 {% endfor %}
-                            </div>
                             {% endif %}
                             </div>
                         </div>
