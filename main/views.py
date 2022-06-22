@@ -100,20 +100,6 @@ def thread_detail(request, pk):
         }
     )
 
-def submit_comment(request, pk):
-    thread = Thread.objects.get(pk=pk)
-
-    if request.method == "POST":
-        form = CommentForm(request.POST, request.FILES)
-        form.save(commit=False)
-        form.instance.thread = thread
-        form.instance.author = request.user
-        form.save()
-        return redirect(thread.get_absolute_url())
-
-    else:
-        return redirect(thread.get_absolute_url())
-
 def topic_page(request, slug):
     topics = Topic.objects.all()
     topic = Topic.objects.get(slug=slug)
@@ -130,6 +116,35 @@ def topic_page(request, slug):
         'main/thread_list.html',
         context
     )
+
+def submit_comment(request, pk):
+    thread = Thread.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST, request.FILES)
+        form.save(commit=False)
+        form.instance.thread = thread
+        form.instance.author = request.user
+        form.save()
+        return redirect(thread.get_absolute_url())
+
+    else:
+        return redirect(thread.get_absolute_url())
+
+def submit_reply(request, pk):
+    comment = Comment.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST, request.FILES)
+        form.save(commit=False)
+        form.instance.parent = comment
+        form.instance.author = request.user
+        form.save()
+        return redirect(comment.get_absolute_url())
+
+    else:
+        return redirect(comment.get_absolute_url())
+
 
 def upvote_thread(request, pk):
     target = get_object_or_404(Thread, id=pk)
