@@ -95,7 +95,14 @@
                                     <div class="media ml-3">
                                         {% if rep.image %}<img class="img-fluid rounded mr-3" src="{{ rep.image.url }}" style="max-height: 150px;">{% endif %}
                                         <div class="media-body">
-                                            <span class="mr-2" style="font-weight: 600; font-size: 13px;">{{ rep.author }}</span><span class="text-secondary" style="font-size: 10px;">{{ rep.created_at }}</span>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <span class="mr-2" style="font-weight: 600; font-size: 13px;">{{ rep.author }}</span><span class="text-secondary" style="font-size: 10px;">{{ rep.created_at }}</span>
+                                                </div>
+                                                <div class="col-1 ml-auto">
+                                                    <a href="{{ rep.get_absolute_url }}"><span class="text-secondary" style="font-size: 10px;">#{{ rep.pk }}</span></a>
+                                                </div>
+                                            </div>
                                             <p class="mb-0">{{ rep.content }}</p>
                                             <span>
                                                 <a href={% url 'upvote-comment' rep.id %} style="text-decoration: none;">
