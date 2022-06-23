@@ -45,7 +45,7 @@
     {% if thread.comment_set.exists %}
         {% for comment in thread.comment_set.iterator %}
             {% if comment.parent == null %}
-            <div id="comment-{{ comment.pk }}">
+            <div id="{{ comment.pk }}">
                 <div class="card my-1">
                     <div class="card-body">
                         <div class="media">
@@ -92,7 +92,7 @@
                             {% endif %}
                             {% if comment.comment_set.exists %}
                                     {% for rep in comment.comment_set.iterator %}
-                                    <div class="media ml-3">
+                                    <div class="media ml-3" id="{{ rep.pk }}">
                                         {% if rep.image %}<img class="img-fluid rounded mr-3" src="{{ rep.image.url }}" style="max-height: 150px;">{% endif %}
                                         <div class="media-body">
                                             <div class="row">
