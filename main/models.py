@@ -56,7 +56,7 @@ class Comment(models.Model):
         return f'{self.author} | {self.content}'
 
     def get_absolute_url(self):
-        return f'{self.thread.get_absolute_url()}#{self.pk}'
+        return f'/{self.thread.get_absolute_url}#{self.pk}'
 
     class Meta:
         ordering = ['-upvotes']
