@@ -87,6 +87,7 @@ SITE_ID = 1
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+LOGIN_URL = '/account/login'
 LOGIN_REDIRECT_URL = '/'
 
 # Database
