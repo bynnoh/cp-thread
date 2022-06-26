@@ -7,7 +7,7 @@
         <div class="card-body">
             <div><i class="fa-solid fa-fire mr-1" style="color: red"></i><span style="font-weight: 600; font-size: 20px;">Hot Topic</span></div>
             {% for t in topics %}
-                <a class="badge" href="/topic/{{t.slug}}" style="color: initial; border: solid 1px; border-radius: 15px;"><b>/{{ t.topic }}</b></a>
+                <a class="badge" href="/topic/{{ t.slug }}" style="color: initial; border: solid 1px; border-radius: 15px;"><b>/{{ t.topic }}</b></a>
             {% endfor %}
         </div>
     </div>
@@ -51,7 +51,7 @@
         </div>
     {% endfor %}
 
-    <div class="pagination mx-auto" style="width: 150px;">
+    <!-- <div class="pagination mx-auto" style="width: 150px;">
         <span class="step-links">
             {% if page_obj.has_previous %}
                 <a href="?page=1">&laquo;</a>
@@ -67,6 +67,6 @@
                 <a href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
             {% endif %}
         </span>
-    </div>
+    </div> -->
 </div>
 {% endblock %}

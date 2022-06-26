@@ -1,3 +1,6 @@
+from datetime import date
+from django.db.models.functions import Trunc
+from django.db.models import DateTimeField
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -32,6 +35,19 @@ class ThreadList(ListView):
         context = super(ThreadList, self).get_context_data()
         context['topics'] = Topic.objects.all()
         return context
+
+def main_thread_list(request):
+    today = date.today()
+    t = Thread.objects.annotate(created_day = Trunc('created_at', 'day', output_field = DateTimeField())).filter(created_day=today)
+
+    return render(
+        request,
+        'main/thread_list.html',
+        {
+            'thread_list': t,
+            'topics': Topic.objects.all(),
+        }
+    )
 
 # class ThreadDetail(DetailView):
 #     model = Thread
