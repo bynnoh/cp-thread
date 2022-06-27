@@ -38,7 +38,7 @@ class ThreadList(ListView):
 
 def main_thread_list(request):
     today = date.today()
-    t = Thread.objects.annotate(created_day = Trunc('created_at', 'day', output_field = DateTimeField())).filter(created_day=today)
+    t = Thread.objects.annotate(created_day = Trunc('created_at', 'day', output_field = DateTimeField())).filter(created_day=today).order_by('-upvotes')
 
     return render(
         request,
