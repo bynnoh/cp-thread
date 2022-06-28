@@ -53,7 +53,8 @@
         </div>
     {% endfor %}
 
-    <!-- <div class="pagination mx-auto" style="width: 150px;">
+    {% if page_obj %}
+    <div class="pagination mx-auto" style="width: 150px;">
         <span class="step-links">
             {% if page_obj.has_previous %}
                 <a href="?page=1">&laquo;</a>
@@ -69,6 +70,7 @@
                 <a href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
             {% endif %}
         </span>
-    </div> -->
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
