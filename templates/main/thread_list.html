@@ -15,8 +15,8 @@
 <div class="container">
     {% for thread in thread_list %}
         <div class="row my-3">
-            <div class="col-2 col-sm-1">
-                <div class="card bg-light h-100">
+            <div class="col-2 col-md-1 pe-0">
+                <div class="card bg-light h-100" style="max-width: 50px;">
                     <div class="mx-auto" style="padding-top: 16px;">
                         <span>
                             <a href={% url 'upvote' thread.id %} style="text-decoration: none;">
@@ -30,10 +30,10 @@
                     </div>
                 </div>    
             </div>
-            <div class="col">
+            <div class="col ps-0">
                 <div class="card">
-                    <div>
-                        <div style="padding: 16px 0 0 16px; font-size: 13px;">
+                    <div class="p-3">
+                        <div style="font-size: 13px;">
                             <span><a href="{{ thread.get_topic_url }}" style="text-decoration: none; color: black; font-weight: 600;">/{{ thread.topic }}</a></span>
                             <span class="mx-1" style="font-weight: 600;">{{ thread.author }}</span><span class="text-secondary" style="font-size: 10px;">{{ thread.created_at }}</span>
                             <p class="my-2"><a href="{{ thread.get_absolute_url }}" style="text-decoration: none; font-size: 20px; font-weight: 600; color: black;">{{ thread.title }}</a></p>
@@ -54,7 +54,7 @@
     {% endfor %}
 
     {% if page_obj %}
-    <div class="pagination mx-auto" style="width: 150px;">
+    <div class="pagination justify-content-center">
         <span class="step-links">
             {% if page_obj.has_previous %}
                 <a href="?page=1">&laquo;</a>
