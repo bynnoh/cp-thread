@@ -7,7 +7,7 @@
         <div class="card-body">
             <div><i class="fa-solid fa-fire mr-1" style="color: red"></i><span style="font-weight: 600; font-size: 20px;">Hot Topic</span></div>
             {% for t in topics %}
-                <a class="badge" href="/topic/{{ t.slug }}" style="color: initial; border: solid 1px; border-radius: 15px;"><b>/{{ t.topic }}</b></a>
+                <a class="badge" href="/topic/{{ t.slug }}" style="text-decoration: none; color: initial; border: solid 1px; border-radius: 15px;"><b>/{{ t.topic }}</b></a>
             {% endfor %}
         </div>
     </div>
@@ -15,9 +15,9 @@
 <div class="container">
     {% for thread in thread_list %}
         <div class="row my-3">
-            <div class="col-1">
+            <div class="col-2 col-sm-1">
                 <div class="card bg-light h-100">
-                    <div class="mx-auto" style="width: 10px; padding-top: 16px;">
+                    <div class="mx-auto" style="padding-top: 16px;">
                         <span>
                             <a href={% url 'upvote' thread.id %} style="text-decoration: none;">
                                 <i class="fa-solid fa-arrow-up" style="color: black"></i>
@@ -30,7 +30,7 @@
                     </div>
                 </div>    
             </div>
-            <div class="col pl-0">
+            <div class="col">
                 <div class="card">
                     <div>
                         <div style="padding: 16px 0 0 16px; font-size: 13px;">
