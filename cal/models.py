@@ -3,6 +3,7 @@ from markdownx.models import MarkdownxField
 
 class Event(models.Model):
     event = MarkdownxField(max_length=50)
+    desc = MarkdownxField(max_length=5000)
     start = models.DateTimeField()
     end = models.DateTimeField()
 
