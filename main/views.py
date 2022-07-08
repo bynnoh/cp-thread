@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
-from .models import Topic, Thread, Comment, Vote
+from .models import ScrapThread, Topic, Thread, Comment, Vote
 from .forms import ThreadForm, CommentForm
 
 def topic_page(request, slug):
@@ -186,6 +186,14 @@ def downvote_thread(request, pk):
         target.upvotes -= 1
         target.save()
         return redirect(target.get_absolute_url())
+
+def scrap_thread(request, pk):
+    target = get_object_or_404(Thread, id=pk)
+
+    if ScrapThread.objects.filter(user = request.user):
+        return redirect(target.get_absolute_url())
+    else:
+        ScrapThread.objects.create(user = request.user, thread = target)
 
 def upvote_comment(request, pk):
     target = get_object_or_404(Comment, id=pk)
