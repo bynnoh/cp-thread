@@ -39,6 +39,10 @@ class Thread(models.Model):
     def get_content_markdown(self):
         return markdown(self.content)
 
+class ScrapThread(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+
 class Comment(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     content = MarkdownxField(max_length=5000)
