@@ -9,6 +9,7 @@ class Platform(models.Model):
 
 class Event(models.Model):
     event = models.CharField(max_length=50)
+    hero = models.ImageField()
     start = models.DateTimeField()
     end = models.DateTimeField()
     platform = models.ForeignKey(Platform, on_delete=models.SET_NULL)
